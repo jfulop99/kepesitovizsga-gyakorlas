@@ -1,7 +1,5 @@
 package hu.nive.ujratervezes.kepesitovizsga.covid;
 
-import org.mariadb.jdbc.MariaDbDataSource;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,27 +26,27 @@ public class AstraZeneca extends Vaccine {
         ) {
             stmt.setInt(1, age);
             return getResult(stmt);
-        } catch (SQLException sqle) {
-            throw new IllegalArgumentException("Error by insert", sqle);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Error by insert", e);
         }
     }
 
     private List<Person> getResult(PreparedStatement stmt) {
         List<Person> people = new ArrayList<>();
         try (
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery()
         ) {
             while (rs.next()) {
                 people.add(new Person(rs.getString("person_name"),
                         rs.getInt("age"), ChronicDisease.valueOf(rs.getString("chronic_disease").toUpperCase()),
                         Pregnancy.valueOf(rs.getString("pregnancy").toUpperCase())));
             }
-            if (people.size() == 0) {
+            if (people.isEmpty()) {
                 throw new IllegalArgumentException("No result");
             }
             return people;
-        } catch (SQLException sqle) {
-            throw new IllegalArgumentException("Error by Query", sqle);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Error by Query", e);
         }
     }
 

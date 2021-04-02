@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DogManager {
 
@@ -42,7 +39,7 @@ public class DogManager {
                 .filter(dog -> dog.getName().equalsIgnoreCase(name))
                 .map(Dog::getCountry)
                 .findAny()
-                .orElseThrow((Supplier<RuntimeException>) () -> new IllegalArgumentException("No such dog name found."));
+                .orElseThrow(() -> new IllegalArgumentException("No such dog name found."));
     }
 
     public List<Dog> getDogsInAlphabeticalOrderByName() {
